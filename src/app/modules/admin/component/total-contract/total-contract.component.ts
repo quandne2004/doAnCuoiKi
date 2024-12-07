@@ -10,6 +10,7 @@ export class TotalContractComponent implements OnInit {
 
 
   Contracts:any;
+  p: number = 1;
   constructor(private sv:AdminService) { }
 
   ngOnInit(): void {

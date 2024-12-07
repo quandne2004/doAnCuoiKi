@@ -5,6 +5,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { StorageService } from 'src/app/auth/services/storage/storage.service';
 import { NzMessageService } from 'ng-zorro-antd/message';
 import { error } from 'console';
+import { NzModalService } from 'ng-zorro-antd/modal';
 
 @Component({
   selector: 'app-book-car',
@@ -23,7 +24,8 @@ export class BookCarComponent implements OnInit {
   dateFormat! : "DD-MM-YYYY";
   isSpinning:boolean =false;
   bookings: any;
-  constructor( private sv:CustomerService,private active:ActivatedRoute,private fb:FormBuilder,private msg:NzMessageService,private route:Router) {
+  constructor( private sv:CustomerService,private active:ActivatedRoute,private fb:FormBuilder,private msg:NzMessageService,private route:Router,    private modal: NzModalService,
+  ) {
     this.carId = this.active.snapshot.params["id"];
   
    }
@@ -48,29 +50,38 @@ export class BookCarComponent implements OnInit {
 
   
 
-  bookACar(data:any){
+  bookACar(data: any) {
     console.log(data);
-    const bookACarDto ={
-      toDate: data.toDate,
-      fromDate:data.fromDate,
-      payment:data.payment,
-      userId:StorageService.getUserId(),
-      carId:this.carId
-    }
-    
-    // const formData= new FormData();
-    // formData.append("toDate",this.postCarForm.get("toDate")?.value);
-    // formData.append("fromDate",this.postCarForm.get("fromDate")?.value);
-    // formData.append("userId",StorageService.getUserId());
-    // formData.append("carId",this.carId)
 
-    this.sv.bookACar(this.carId,bookACarDto).subscribe((res)=>{
-      console.log(res);
-      this.msg.success("Booking is SuccessFully",{nzDuration:5000});
-      this.route.navigateByUrl("/customer/my_bookings");
-    },error =>{
-      this.msg.error("Something went wrong",{nzDuration:5000});
-    })
+    // Show confirmation dialog
+    this.modal.confirm({
+      nzTitle: 'Are you sure you want to proceed with the booking?',
+      nzContent: 'This action cannot be undone.',
+      nzOkText: 'Yes',
+      nzOkType: 'primary',
+      nzOnOk: () => {
+        const bookACarDto = {
+          toDate: data.toDate,
+          fromDate: data.fromDate,
+          payment: data.payment,
+          userId: StorageService.getUserId(),
+          carId: this.carId
+        };
+
+        this.sv.bookACar(this.carId, bookACarDto).subscribe(
+          (res) => {
+            console.log(res);
+            this.msg.success('Booking is SuccessFully', { nzDuration: 5000 });
+            this.route.navigateByUrl('/customer/my_bookings');
+          },
+          (error) => {
+            this.msg.error('Something went wrong', { nzDuration: 5000 });
+          }
+        );
+      },
+      nzCancelText: 'No',
+      nzOnCancel: () => console.log('Cancel')
+    });
   }
 
   //loại bỏ navbar đi đến luôn phần content

@@ -1,46 +1,93 @@
-
-<h1>Total Car</h1>
-<div class="table-container">
-    <div class="table-header">
-        <div class="search-wrapper" >
-            <form [formGroup]="searchForm">
-            <input type="text" id="search-input" placeholder="Search..." formControlName="name">
-            <button (click)="searchCarByName()"><i class="fas fa-search" ></i></button>
-        </form>
+<div class="content-header">
+    <div class="container-fluid">
+      <div class="row mb-2">
+        <div class="col-sm-6">
+          <h1 class="m-0">Total Car</h1>
         </div>
-        <div class="view-options">
-            <label for="rows-select">Show rows:</label>
-            <select id="rows-select">
-                <option value="10">10</option>
-                <option value="20">20</option>
-                <option value="50">50</option>
-            </select>
-        </div>
+      </div>
     </div>
-    <table id="employee-table">
-        <thead>
-            <tr>
-                <th>Profile Image</th>
-                <th data-column="id" data-order="desc">ID <i class="fas fa-sort"></i></th>
-                <th data-column="fullName" data-order="desc">Name <i class="fas fa-sort"></i></th>
-                <th data-column="sex" data-order="desc">Brand <i class="fas fa-sort"></i></th>
-                <th data-column="age" data-order="desc">Color <i class="fas fa-sort"></i></th>
-                <th data-column="position" data-order="desc">Year <i class="fas fa-sort"></i></th>
-                <th data-column="salary" data-order="desc">Type <i class="fas fa-sort"></i></th>
-                <th data-column="address" data-order="desc">CarOwner <i class="fas fa-sort"></i></th>
-            </tr>
-        </thead>
-        <tbody id="table-body" *ngFor="let item of cars">
-            <td><img [src]="item.processedImg"></td>
-            <td>{{item.id}}</td>
-            <td>{{item.name}}</td>
-            <td>{{item.brand}}</td>
-            <td>{{item.color}}</td>
-            <td>{{item.year}}</td>
-            <td>{{item.type}}</td>
-            <td>{{item.carOwner}}</td>
-        </tbody>
-    </table>
-</div>
+  </div>
+  
+  <div class="card">
+    <div class="card-header">
+      <div class="row">
+        <div class="col-md-6">
+          <form  class="form-inline" >
+            <div class="input-group input-group-sm">
+              <input
+                type="text"
+                class="form-control form-control-navbar"
+                id="search-input"
+                placeholder="Search by name..."
+                [(ngModel)]="name" 
+                name="name"
+                (ngModelChange)="searchCarByName(name)"
 
-<button routerLink="/admin/data-dashboard" routerLinkActive="active">Back</button>
+                />
+              <div class="input-group-append">
+                <button class="btn btn-navbar" (click)="searchCarByName(name)" >
+                  <i class="fas fa-search"></i>
+                </button>
+              </div>
+            </div>
+          </form>
+        </div>
+        <div class="col-md-6 text-right">
+          <label for="rows-select" class="mr-2">Show rows:</label>
+          <select id="rows-select" class="custom-select custom-select-sm w-auto">
+            <option value="10">10</option>
+            <option value="20">20</option>
+            <option value="50">50</option>
+          </select>
+        </div>
+      </div>
+    </div>
+  
+    <div class="card-body table-responsive p-0">
+      <table class="table table-hover text-nowrap">
+        <thead>
+          <tr>
+            <th>Profile Image</th>
+            <th>ID <i class="fas fa-sort"></i></th>
+            <th>Name <i class="fas fa-sort"></i></th>
+            <th>Brand <i class="fas fa-sort"></i></th>
+            <th>Color <i class="fas fa-sort"></i></th>
+            <th>Year <i class="fas fa-sort"></i></th>
+            <th>Type <i class="fas fa-sort"></i></th>
+            <th>Car Owner <i class="fas fa-sort"></i></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let item of cars | paginate: { itemsPerPage: 8, currentPage: p }">
+            <td><img [src]="item.processedImg" alt="Car image" class="img-circle img-size-32 mr-2" /></td>
+            <td>{{ item.id }}</td>
+            <td>{{ item.name }}</td>
+            <td>{{ item.brand }}</td>
+            <td>{{ item.color }}</td>
+            <td>{{ item.year | date: 'dd/MM/yyyy' }}</td>
+            <td>{{ item.type }}</td>
+            <td>{{ item.carOwner }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+        <!-- Thanh chuyển trang cố định dưới đáy trang -->
+        <div class="pagination-container">
+          <pagination-controls (pageChange)="p = $event"></pagination-controls>
+      </div>
+    <style>
+      .pagination-container {
+        display: flex;
+        justify-content: center;
+        margin-top: 20px;
+        width: 100%;
+    }
+    </style>
+  
+    <div class="card-footer">
+      <button routerLink="/admin/data-dashboard" routerLinkActive="active" class="btn btn-secondary">
+        Back
+      </button>
+    </div>
+  </div>
+  

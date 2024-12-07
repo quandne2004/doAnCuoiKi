@@ -1,4 +1,4 @@
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { StorageService } from 'src/app/auth/services/storage/storage.service';
@@ -116,6 +116,12 @@ export class AdminService {
   changeStatusComment(commentId:number,status:string):Observable<any>{
     return this.http.get(BASIC_URL + `/api/admin/comment/${commentId}/${status}`,{headers:this.createAuthorizationHeader()});
   }
+  searchTotalBooking(id:number):Observable<any>{
+    const params = new HttpParams().set('id',id);
+    const headers = this.createAuthorizationHeader();
+    return this.http.get(BASIC_URL + '/api/admin/searchById',{headers,params});
+  }
+
 
 
   createAuthorizationHeader():HttpHeaders{

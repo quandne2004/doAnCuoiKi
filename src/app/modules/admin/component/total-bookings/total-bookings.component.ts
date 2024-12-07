@@ -9,7 +9,10 @@ import { AdminService } from '../../services/admin.service';
 export class TotalBookingsComponent implements OnInit {
 
 
+
+  id!:number;
   bookACar:any;
+  p: number = 1;
   constructor(private sv:AdminService) { }
 
   ngOnInit(): void {
@@ -22,5 +25,18 @@ export class TotalBookingsComponent implements OnInit {
       this.bookACar = res;
     })
   }
+
+  searchTotal(id: number | null) {
+    if (!id) {
+      this.getAllBookACar(); 
+      return;
+    }
+  
+    this.sv.searchTotalBooking(id).subscribe((res) => {
+      this.bookACar = res;
+      console.log(res);
+    });
+  }
+  
 
 }

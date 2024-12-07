@@ -1,44 +1,68 @@
-
-<h1>Total Bookings</h1>
-<div class="table-container">
-    <div class="table-header">
-        <div class="search-wrapper" >
-            <form >
-            <input type="text" id="search-input" placeholder="Search..." formControlName="name">
-            <button><i class="fas fa-search" ></i></button>
-        </form>
-        </div>
-        <div class="view-options">
-            <label for="rows-select">Show rows:</label>
-            <select id="rows-select">
-                <option value="10">10</option>
-                <option value="20">20</option>
-                <option value="50">50</option>
-            </select>
-        </div>
+<div class="card">
+    <div class="card-header">
+      <h1 class="card-title">Total Bookings</h1>
     </div>
-    <table id="employee-table">
-        <thead>
-            <tr>
-                <th data-column="id" data-order="desc">ID <i class="fas fa-sort"></i></th>
-                <th data-column="fullName" data-order="desc">FromDate <i class="fas fa-sort"></i></th>
-                <th data-column="sex" data-order="desc">Payment <i class="fas fa-sort"></i></th>
-                <th data-column="age" data-order="desc">ToDate <i class="fas fa-sort"></i></th>
-                <th data-column="position" data-order="desc">Days <i class="fas fa-sort"></i></th>
-                <th data-column="salary" data-order="desc">Price <i class="fas fa-sort"></i></th>
-                <th data-column="address" data-order="desc">Status <i class="fas fa-sort"></i></th>
-            </tr>
-        </thead>
-        <tbody id="table-body" *ngFor="let item of bookACar">
-            <td>{{item.id}}</td>
-            <td>{{item.fromDate}}</td>
-            <td>{{item.payment}}</td>
-            <td>{{item.toDate}}</td>
-            <td>{{item.days}}</td>
-            <td>{{item.price}}</td>
-            <td>{{item.bookACarStatus}}</td>
-        </tbody>
-    </table>
-</div>
-
-<button routerLink="/admin/data-dashboard" routerLinkActive="active">Back</button>
+    <div class="card-body">
+      <div class="table-container">
+        <div class="table-header">
+          <div class="search-wrapper">
+            <form (ngSubmit)="searchTotal(id)">
+              <input type="text" id="search-input" placeholder="Search..."  [(ngModel)]="id" 
+              name="id">
+              <button class="btn-navbar"><i class="fas fa-search"></i></button>
+            </form>
+          </div>
+          <div class="col-md-6 text-right">
+            <label for="rows-select" class="mr-2">Show rows:</label>
+            <select id="rows-select" class="custom-select custom-select-sm w-auto">
+              <option value="10">10</option>
+              <option value="20">20</option>
+              <option value="50">50</option>
+            </select>
+          </div>
+        </div>
+        <div class="table-responsive">
+          <table id="booking-table">
+            <thead>
+              <tr>
+                <th>ID <i class="fas fa-sort"></i></th>
+                <th>FromDate <i class="fas fa-sort"></i></th>
+                <th>Payment <i class="fas fa-sort"></i></th>
+                <th>ToDate <i class="fas fa-sort"></i></th>
+                <th>Days <i class="fas fa-sort"></i></th>
+                <th>Price <i class="fas fa-sort"></i></th>
+                
+              </tr>
+            </thead>
+            <tbody *ngFor="let item of bookACar | paginate: { itemsPerPage: 10, currentPage: p }">
+              <tr>
+                <td>{{item.id}}</td>
+                <td>{{item.fromDate | date: 'dd/MM/yyyy'}}</td>
+                <td>{{item.payment}}</td>
+                <td>{{item.toDate | date: 'dd/MM/yyyy'}}</td>
+                <td>{{item.days}}</td>
+                <td>{{item.price}}</td>
+                
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+        <!-- Thanh chuyển trang cố định dưới đáy trang -->
+        <div class="pagination-container">
+          <pagination-controls (pageChange)="p = $event"></pagination-controls>
+      </div>
+    <style>
+      .pagination-container {
+        display: flex;
+        justify-content: center;
+        margin-top: 20px;
+        width: 100%;
+    }
+    </style>
+    <div class="card-footer">
+      <button routerLink="/admin/data-dashboard" routerLinkActive="active" class="btn-secondary">Back</button>
+    </div>
+  </div>
+  

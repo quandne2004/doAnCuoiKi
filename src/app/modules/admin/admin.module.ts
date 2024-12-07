@@ -16,7 +16,7 @@ import { NzMessageModule } from 'ng-zorro-antd/message'; // Import module này
 import {NzSelectModule} from 'ng-zorro-antd/select';
 import {NzTimePickerModule} from 'ng-zorro-antd/time-picker';
 import {NzDatePickerModule} from 'ng-zorro-antd/date-picker';
-import { ReactiveFormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { UpdateCarComponent } from './component/update-car/update-car.component';
 import { GetBookingsComponent } from './component/get-bookings/get-bookings.component';
 import {NzTableModule} from 'ng-zorro-antd/table';
@@ -33,11 +33,8 @@ import { DataDashboardComponent } from './component/data-dashboard/data-dashboar
 import { TotalCarComponent } from './component/total-car/total-car.component';
 import { TotalBookingsComponent } from './component/total-bookings/total-bookings.component';
 import { TotalContractComponent } from './component/total-contract/total-contract.component';
-import { NgChartsModule } from 'ng2-charts';  // Sử dụng NgChartsModule thay vì ChartsModule
+import { NgChartsModule } from 'ng2-charts';
 import { NgxPaginationModule } from 'ngx-pagination';
-import { NzModalModule } from 'ng-zorro-antd/modal';
-
-
 
 
 @NgModule({
@@ -62,11 +59,10 @@ import { NzModalModule } from 'ng-zorro-antd/modal';
   ],
   imports: [
     CommonModule,
-    NzModalModule, // Import module của NzModal
-    NgxPaginationModule,
     AdminRoutingModule,
     ReactiveFormsModule,
     HttpClientModule,
+    FormsModule,
     NzSpinModule,
     NzFormModule,
     NzButtonModule,
@@ -74,9 +70,7 @@ import { NzModalModule } from 'ng-zorro-antd/modal';
     NzLayoutModule,
     NzMessageModule,
     NzSelectModule,
-    NzDatePickerModule,NzTimePickerModule,NzTableModule,
-    NgChartsModule,
-    
+    NzDatePickerModule,NzTimePickerModule,NzTableModule,NgChartsModule,NgxPaginationModule
   ]
 })
 export class AdminModule { }

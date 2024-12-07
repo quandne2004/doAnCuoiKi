@@ -1,9 +1,10 @@
-<div class="contract-form">
+
+  <div class="contract-form">
     <h2>Thông Tin Hợp Đồng Thuê Xe</h2>
-    <form>
-      <div class="form-group" *ngIf="rentalContracts">
+    <form [formGroup]="bookACarForm" (ngSubmit)="updateBookACar()">
+      <div class="form-group">
         <label>ID Hợp Đồng:</label>
-        <span>{{ rentalContracts.id }}</span>
+        <span>{{ rentalContracts?.id }}</span>
       </div>
   
       <div class="form-group">
@@ -12,33 +13,8 @@
       </div>
   
       <div class="form-group">
-        <label>Phương Thức Thanh Toán:</label>
-        <span>{{ rentalContracts?.paymentMethod }}</span>
-      </div>
-  
-      <div class="form-group">
-        <label>Ngày Bắt Đầu:</label>
-        <span>{{ rentalContracts.bookACarfromDate | date: 'dd/MM/yyyy' }}</span>
-      </div>
-  
-      <div class="form-group">
-        <label>Ngày Kết Thúc:</label>
-        <span>{{ rentalContracts.bookACartoDate | date: 'dd/MM/yyyy' }}</span>
-      </div>
-  
-      <div class="form-group">
-        <label>Số Ngày Thuê:</label>
-        <span>{{ rentalContracts.bookACarDays }}</span>
-      </div>
-  
-      <div class="form-group">
-        <label>Giá Thuê:</label>
-        <span>{{ rentalContracts.bookACarPrice | currency: 'VND' }}</span>
-      </div>
-  
-      <div class="form-group">
         <label>Tên Xe:</label>
-        <span>{{ rentalContracts.carName }}</span>
+        <span>{{ rentalContracts?.carName }}</span>
       </div>
   
       <div class="form-group">
@@ -68,20 +44,68 @@
   
       <div class="form-group">
         <label>Điều Khoản Sử Dụng:</label>
-        <span>{{ rentalContracts.usageTerms }}</span>
+        <span>{{ rentalContracts?.usageTerms }}</span>
       </div>
   
       <div class="form-group">
         <label>Điều Khoản Kết Thúc:</label>
-        <span>{{ rentalContracts.terminationTerms }}</span>
+        <span>{{ rentalContracts?.terminationTerms }}</span>
       </div>
   
       <div class="form-group">
         <label>Trạng Thái Hợp Đồng:</label>
-        <span>{{ rentalContracts.rentalContractStatus }}</span>
+        <span>{{ rentalContracts?.rentalContractStatus }}</span>
       </div>
-    </form>
-
-    <button routerLink="/customer/rental">Back</button>
+  
+  <div class="form-group">
+    <label>Phương Thức Thanh Toán:</label>
+    <div *ngIf="!isEditPayment">
+      <span>{{ rentalContracts?.paymentMethod }}</span>
+      <button type="button" (click)="toggleEditField('paymentMethod')" class="edit-button">
+        <i class="fas fa-edit"></i>
+      </button>
+    </div>
+    <div *ngIf="isEditPayment">
+      <select formControlName="payment" class="form-control">
+        <option *ngFor="let payment of listOfPayment" [value]="payment">{{ payment }}</option>
+      </select>
+    </div>
   </div>
+  
+  <div class="form-group">
+    <label>Ngày Bắt Đầu:</label>
+    <div *ngIf="!isEditFromDate">
+      <span>{{ rentalContracts?.bookACarfromDate | date: 'dd/MM/yyyy' }}</span>
+      <button type="button" (click)="toggleEditField('fromDate')" class="edit-button">
+        <i class="fas fa-edit"></i>
+      </button>
+    </div>
+    <div *ngIf="isEditFromDate">
+      <input formControlName="fromDate" type="date" class="form-control" [value]="rentalContracts?.bookACarfromDate | date: 'yyyy-MM-dd'" />
+    </div>
+  </div>
+  
+  <div class="form-group">
+    <label>Ngày Kết Thúc:</label>
+    <div *ngIf="!isEditToDate">
+      <span>{{ rentalContracts?.bookACartoDate | date: 'dd/MM/yyyy' }}</span>
+      <button type="button" (click)="toggleEditField('toDate')" class="edit-button">
+        <i class="fas fa-edit"></i>
+      </button>
+    </div>
+    <div *ngIf="isEditToDate">
+      <input formControlName="toDate" type="date" class="form-control" [value]="rentalContracts?.bookACartoDate | date: 'yyyy-MM-dd'" />
+    </div>
+  </div>
+  
+  
+      <button type="submit" [disabled]="!bookACarForm.valid" class="submit-button">Cập Nhật</button>
+    </form>
+  
+    <!-- Nút Back -->
+    <div class="back-container">
+      <button routerLink="/customer/rental" routerLinkActive="active" class="back-button">Quay Lại</button>
+    </div>
+  </div>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
   

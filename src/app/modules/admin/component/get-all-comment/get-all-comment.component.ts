@@ -11,6 +11,7 @@ export class GetALlCommentComponent implements OnInit {
 
   isSpinning:boolean = false;
   comments:any;
+  p:number =1;
   constructor(private sv:AdminService) { }
 
   ngOnInit(): void {
@@ -19,6 +20,13 @@ export class GetALlCommentComponent implements OnInit {
 
   getAllComment(){
     this.sv.getAllComment().subscribe((res)=>{
+      console.log(res);
+      this.comments = res;
+    })
+  }
+
+  changeStatus(commentId:number,status:string){
+    this.sv.changeStatusComment(commentId,status).subscribe((res)=>{
       console.log(res);
       this.comments = res;
     })

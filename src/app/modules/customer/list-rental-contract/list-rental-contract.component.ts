@@ -10,7 +10,8 @@ import { NzMessageService } from 'ng-zorro-antd/message';
 export class ListRentalContractComponent implements OnInit {
 
 
-  rentalContracts:any
+  rentalContracts:any;
+  p:number=1;
   isSpinning:boolean = false;
   constructor(private sv:CustomerService,private msg:NzMessageService) { }
 

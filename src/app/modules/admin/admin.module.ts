@@ -34,6 +34,8 @@ import { TotalCarComponent } from './component/total-car/total-car.component';
 import { TotalBookingsComponent } from './component/total-bookings/total-bookings.component';
 import { TotalContractComponent } from './component/total-contract/total-contract.component';
 import { NgChartsModule } from 'ng2-charts';  // Sử dụng NgChartsModule thay vì ChartsModule
+import { NgxPaginationModule } from 'ngx-pagination';
+import { NzModalModule } from 'ng-zorro-antd/modal';
 
 
 
@@ -60,6 +62,8 @@ import { NgChartsModule } from 'ng2-charts';  // Sử dụng NgChartsModule thay
   ],
   imports: [
     CommonModule,
+    NzModalModule, // Import module của NzModal
+    NgxPaginationModule,
     AdminRoutingModule,
     ReactiveFormsModule,
     HttpClientModule,

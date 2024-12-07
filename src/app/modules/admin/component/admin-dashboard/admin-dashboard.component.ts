@@ -12,6 +12,7 @@ export class AdminDashboardComponent implements OnInit {
   constructor(private admin: AdminService, private msg: NzMessageService) { }
 
   cars: any = [];
+  p: number = 1;
 
   ngOnInit() {
     this.getAllCar();

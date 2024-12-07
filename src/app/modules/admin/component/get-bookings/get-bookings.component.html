@@ -1,50 +1,59 @@
-
-<h1>User Bookings</h1>
-
 <div id="content">
-<nz-spin [nzSpinning]="isSpinning" [nzSize]="'large'" nzTip="Loading...">
-    <table style="width: 100%; border-collapse: collapse; margin-top: 20px; background-color: #ffffff;">
-      <thead>
-        <tr style="background-color: #f0f0f0; text-align: left; border-bottom: 2px solid #ddd;">
-          <th style="padding: 10px; color: #003973;">Username</th>
-          <th style="padding: 10px; color: #003973;">Email</th>
-          <th style="padding: 10px; color: #003973;">From Date</th>
-          <th style="padding: 10px; color: #003973;">To Date</th>
-          <th style="padding: 10px; color: #003973;">Price</th>
-          <th style="padding: 10px; color: #003973;">Days</th>
-          <th style="padding: 10px; color: #003973;">Payment Status</th>
-          <th style="padding: 10px; color: #003973;">Status</th>
-          <th style="padding: 10px; color: #003973;">Actions</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr *ngFor="let booking of bookings" style="border-bottom: 1px solid #ddd;">
-          <td style="padding: 10px;">{{booking.username}}</td>
-          <td style="padding: 10px;">{{booking.email}}</td>
-          <td style="padding: 10px;">{{booking.fromDate | date: 'MMM d, y'}}</td>
-          <td style="padding: 10px;">{{booking.toDate | date: 'MMM d, y'}}</td>
-          <td style="padding: 10px;">{{booking.price | currency: 'VND'}}</td>
-          <td style="padding: 10px;">{{booking.days}}</td>
-          <td style="padding: 10px;">{{booking.payment}}</td>
-          <td style="padding: 10px;">
-            <strong [ngStyle]="{'color': (booking.bookCarStatus === 'APPROVED' ? 'green' : booking.bookCarStatus === 'REJECTED' ? 'red' : 'orange')}">
-              {{booking.bookCarStatus}}
-            </strong>
-          </td>
-          <td style="padding: 10px;">
-            <div *ngIf="booking.bookCarStatus == 'PENDING'" style="display: flex; gap: 5px;"> <!-- Sử dụng gap để giảm khoảng cách -->
-              <button style="border-radius: 5px; font-size: 14px; padding: 6px 12px; background-color: #28a745; color: white; border: none; cursor: pointer; transition: background-color 0.3s;"
-                      nz-button (click)="changeBookingStatus(booking.id, 'Approve')">
-                APPROVE
-              </button>
-              <button style="border-radius: 5px; font-size: 14px; padding: 6px 12px; background-color: #dc3545; color: white; border: none; cursor: pointer; transition: background-color 0.3s;"
-                      nz-button (click)="changeBookingStatus(booking.id, 'Reject')">
-                REJECT
-              </button>
-            </div>
-          </td>
-        </tr>
-      </tbody>
-    </table>
-  </nz-spin>
-</div>
+  <nz-spin [nzSpinning]="isSpinning" [nzSize]="'large'" nzTip="Loading...">
+      <table style="width: 100%; border-collapse: collapse; margin-top: 20px; background-color: #ffffff;">
+        <thead>
+          <tr style="background-color: #f0f0f0; text-align: left; border-bottom: 2px solid #ddd;">
+            <th style="padding: 10px; color: #003973;">Username</th>
+            <th style="padding: 10px; color: #003973;">Email</th>
+            <th style="padding: 10px; color: #003973;">From Date</th>
+            <th style="padding: 10px; color: #003973;">To Date</th>
+            <th style="padding: 10px; color: #003973;">Price</th>
+            <th style="padding: 10px; color: #003973;">Days</th>
+            <th style="padding: 10px; color: #003973;">Payment Status</th>
+            <th style="padding: 10px; color: #003973;">Status</th>
+            <th style="padding: 10px; color: #003973;">Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let booking of bookings | paginate: { itemsPerPage: 10, currentPage: p }" style="border-bottom: 1px solid #ddd;">
+            <td style="padding: 10px;">{{booking.username}}</td>
+            <td style="padding: 10px;">{{booking.email}}</td>
+            <td style="padding: 10px;">{{booking.fromDate | date: 'MMM d, y'}}</td>
+            <td style="padding: 10px;">{{booking.toDate | date: 'MMM d, y'}}</td>
+            <td style="padding: 10px;">{{booking.price | currency: 'VND'}}</td>
+            <td style="padding: 10px;">{{booking.days}}</td>
+            <td style="padding: 10px;">{{booking.payment}}</td>
+            <td style="padding: 10px;">
+              <strong [ngStyle]="{'color': (booking.bookCarStatus === 'APPROVED' ? 'green' : booking.bookCarStatus === 'REJECTED' ? 'red' : 'orange')}">
+                {{booking.bookCarStatus}}
+              </strong>
+            </td>
+            <td style="padding: 10px;">
+              <div *ngIf="booking.bookCarStatus == 'PENDING'" style="display: flex; gap: 5px;"> <!-- Sử dụng gap để giảm khoảng cách -->
+                <button style="border-radius: 5px; font-size: 14px; padding: 6px 12px; background-color: #28a745; color: white; border: none; cursor: pointer; transition: background-color 0.3s;"
+                        nz-button (click)="changeBookingStatus(booking.id, 'Approve')">
+                  APPROVE
+                </button>
+                <button style="border-radius: 5px; font-size: 14px; padding: 6px 12px; background-color: #dc3545; color: white; border: none; cursor: pointer; transition: background-color 0.3s;"
+                        nz-button (click)="changeBookingStatus(booking.id, 'Reject')">
+                  REJECT
+                </button>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </nz-spin>
+        <!-- Thanh chuyển trang cố định dưới đáy trang -->
+        <div class="pagination-container">
+          <pagination-controls (pageChange)="p = $event"></pagination-controls>
+      </div>
+    <style>
+      .pagination-container {
+        display: flex;
+        justify-content: center;
+        margin-top: 20px;
+        width: 100%;
+    }
+    </style>
+  </div>

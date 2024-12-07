@@ -113,6 +113,10 @@ export class AdminService {
   }
   
 
+  changeStatusComment(commentId:number,status:string):Observable<any>{
+    return this.http.get(BASIC_URL + `/api/admin/comment/${commentId}/${status}`,{headers:this.createAuthorizationHeader()});
+  }
+
 
   createAuthorizationHeader():HttpHeaders{
     let authHeaders : HttpHeaders = new HttpHeaders();

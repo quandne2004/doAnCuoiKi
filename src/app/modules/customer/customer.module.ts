@@ -29,6 +29,8 @@ import { NzCommentModule } from 'ng-zorro-antd/comment';
 import { MyCommentComponent } from './component/my-comment/my-comment.component';
 import { RentalContractComponent } from './component/rental-contract/rental-contract.component';
 import { ListRentalContractComponent } from './list-rental-contract/list-rental-contract.component';
+import { NgxPaginationModule } from 'ngx-pagination';
+import { NzModalModule } from 'ng-zorro-antd/modal';
 @NgModule({
   declarations: [
     CustomerComponent,
@@ -44,6 +46,8 @@ import { ListRentalContractComponent } from './list-rental-contract/list-rental-
   ],
   imports: [
     CommonModule,
+    NgxPaginationModule, 
+    NzModalModule, // Import module của NzModal
     CustomerRoutingModule,
     ReactiveFormsModule,
     HttpClientModule,

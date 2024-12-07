@@ -1,122 +1,134 @@
-
-
-<h1>List Car</h1>
-<button routerLink="/admin/car">Create New</button>
 <div id="content">
-<div class="car-container">
-  <div class="car-card" *ngFor="let car of cars">
-    <div class="car-content">
-      <div class="car-image">
-        <img [src]="car.processedImg" alt="Car image">
-      </div>
-      <div class="car-details">
-        <h2>{{ car.brand }} - {{ car.name }}</h2>
-        <p class="description">{{ car.description }}</p>
-        <hr>
-        <div class="car-info">
-          <h5>
-            Price: <b>${{ car.price }}</b> - 
-            Color: <b>{{ car.color }}</b> - 
-            Transmission: <b>{{ car.transmission }}</b> - 
-            Type: <b>{{ car.type }}</b> - 
-            Year: <b>{{ car.year | date: 'yyyy' }}</b> - 
-            Status: <b>{{ car.carStatus }}</b>
-            carOwner: <b>{{ car.carOwner }}</b>
-          </h5>
+  <div class="car-container">
+    <div class="car-card" *ngFor="let car of cars | paginate: { itemsPerPage: 8, currentPage: p }">
+      <div class="car-content">
+        <div class="car-image">
+          <img [src]="car.processedImg" alt="Car image">
         </div>
-        <div class="car-actions">
-          <button nz-button nzType="primary" routerLink="/admin/cars/{{ car.id }}">Update</button>
-          <button nz-button nzType="primary" (click)="deleteCar(car.id)" nzDanger>Delete</button>
+        <div class="car-details">
+          <h2>{{ car.brand }} - {{ car.name }}</h2>
+          <p class="description">{{ car.description }}</p>
+          <hr>
+          <div class="car-info">
+            <h5>
+              Price: <b>${{ car.price }}</b> - 
+              Color: <b>{{ car.color }}</b> - 
+              Transmission: <b>{{ car.transmission }}</b> - 
+              Type: <b>{{ car.type }}</b> - 
+              Year: <b>{{ car.year | date: 'yyyy' }}</b> - 
+              Status: <b>{{ car.carStatus }}</b>
+              carOwner: <b>{{ car.carOwner }}</b>
+            </h5>
+          </div>
+          <div class="car-actions">
+            <button nz-button nzType="primary" routerLink="/admin/cars/{{ car.id }}">Update</button>
+            <button nz-button nzType="primary" (click)="deleteCar(car.id)" nzDanger>Delete</button>
+          </div>
         </div>
       </div>
     </div>
   </div>
-</div>
-</div>
-
-<style>
-.car-container {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-between;
-  gap: 15px; /* Giảm khoảng cách giữa các sản phẩm */
-  padding: 20px;
-  background-color: #f5f5f5;
-}
-
-.car-card {
-  background-color: white;
-  border-radius: 10px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-  overflow: hidden;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-  width: calc(50% - 15px); /* Đảm bảo hai sản phẩm chiếm một hàng */
-}
-
-.car-card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
-}
-
-.car-content {
-  display: flex;
-  align-items: center;
-  gap: 20px;
-}
-
-.car-image {
-  width: 400px; /* Tăng kích thước hình ảnh */
-  height: 250px; /* Đảm bảo hình ảnh lớn hơn và phù hợp với phần hiển thị chung */
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  background-color: white; /* Đổi màu nền thành trắng */
-}
-
-.car-image img {
-  max-width: 100%;
-  max-height: 100%;
-  object-fit: cover; /* Đảm bảo hình ảnh được căn chỉnh đầy đủ và đẹp */
-}
-
-
-.car-details {
-  flex-grow: 1;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  padding: 20px;
-}
-
-
-.car-details h2 {
-  color: #108ee9;
-  font-size: 18px;
-  font-weight: bold;
-  margin-bottom: 10px;
-  cursor: pointer;
-  text-transform: uppercase;
-}
-
-.car-details .description {
-  font-size: 14px;
-  color: #666;
-  margin-bottom: 10px;
-}
-
-.car-info {
-  font-size: 14px;
-  color: #333;
-  margin-bottom: 10px;
-}
-
-.car-actions {
-  display: flex;
-  justify-content: flex-start;
-  gap: 15px;
-}
-
-.car-actions button {
-  font-size: 14px;
-}
-</style>
+      <!-- Thanh chuyển trang cố định dưới đáy trang -->
+      <div class="pagination-container">
+        <pagination-controls (pageChange)="p = $event"></pagination-controls>
+    </div>
+  <style>
+    .pagination-container {
+      display: flex;
+      justify-content: center;
+      margin-top: 20px;
+      width: 100%;
+  }
+  </style>
+  </div>
+  
+  <style>
+  .car-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 15px; /* Giảm khoảng cách giữa các sản phẩm */
+    /* padding: 20px;
+    background-color: #f5f5f5; */
+  }
+  
+  .car-card {
+    background-color: white;
+    border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    width: calc(50% - 15px); /* Đảm bảo hai sản phẩm chiếm một hàng */
+  }
+  
+  .car-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+  }
+  
+  .car-content {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+  }
+  
+  .car-image {
+    width: 400px; /* Tăng kích thước hình ảnh */
+    height: 250px; /* Đảm bảo hình ảnh lớn hơn và phù hợp với phần hiển thị chung */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: white; /* Đổi màu nền thành trắng */
+  }
+  
+  .car-image img {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: cover; /* Đảm bảo hình ảnh được căn chỉnh đầy đủ và đẹp */
+  }
+  
+  
+  .car-details {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 20px;
+  }
+  
+  
+  .car-details h2 {
+    color: #108ee9;
+    font-size: 18px;
+    font-weight: bold;
+    margin-bottom: 10px;
+    cursor: pointer;
+    text-transform: uppercase;
+  }
+  
+  .car-details .description {
+    font-size: 14px;
+    color: #666;
+    margin-bottom: 10px;
+  }
+  
+  .car-info {
+    font-size: 14px;
+    color: #333;
+    margin-bottom: 10px;
+  }
+  
+  .car-actions {
+    display: flex;
+    justify-content: flex-start;
+    gap: 15px;
+  }
+  
+  .car-actions button {
+    font-size: 14px;
+  }
+  
+  .h5, h5 {
+      font-size: 0.8rem;
+  }
+  </style>

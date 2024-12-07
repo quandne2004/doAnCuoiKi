@@ -1,27 +1,54 @@
-<body>
-
-    <div class="container" *ngFor="let item of cars">
-        <div class="card">
-            <div class="imgBx">
-                <img routerLink="/car-details/{{item.id}}" [src]="item.processedImg" alt="nike-air-shoe">
+<div id="content">
+    <body>
+      <!-- Thanh tìm kiếm -->
+      <div class="search-container">
+        <link
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"
+          rel="stylesheet"
+        />
+        <input
+          type="text"
+          placeholder="Search cars..."
+          (input)="onSearch($event)"
+        />
+        <i class="fa fa-search"></i>
+      </div>
+    
+      <div class="container">
+        <!-- Hiển thị danh sách xe -->
+        <div
+          class="card"
+          *ngFor="let item of filteredCars | paginate: { itemsPerPage: 12, currentPage: p }"
+        >
+          <div class="imgBx">
+            <img
+              routerLink="/car-details/{{ item.id }}"
+              [src]="item.processedImg"
+              alt="car-image"
+            />
+          </div>
+          <div class="contentBx">
+            <h2>{{ item.name }}</h2>
+            <div class="size">
+              <h3>{{ item.brand }}</h3> <span>+</span>
+              <h3>{{ item.transmission }}</h3> <span>+</span>
+              <h3>{{ item.type }}</h3>
             </div>
-  
-            <div class="contentBx">
-  
-                <h2>{{item.name}}</h2>
-  
-                <div class="size">
-                    <h3>{{item.brand}}</h3> <span>+</span> <h3>{{item.transmission}}</h3> <span>+</span> <h3>{{item.type}}</h3>
-                </div>
-  
-                <div class="color">
-  
-                    <h3>{{item.color}}</h3> <span>+</span> <h3>{{item.year|date:'yyyy'}}</h3>
-                </div>
-                <a routerLink="/login">Book Now</a>
+            <div class="color">
+              <h3>{{ item.color }}</h3> <span>+</span>
+              <h3>{{ item.year | date: 'yyyy' }}</h3>
             </div>
-  
+            <div >
+              <a routerLink="/login">Book Now</a>
+            </div>
+          </div>
         </div>
-    </div>
-  
-  </body>
+      </div>
+    
+      <!-- Thanh chuyển trang -->
+      <div class="pagination-container">
+        <!-- Thay đổi phương thức xử lý sự kiện -->
+        <pagination-controls (pageChange)="onPageChange($event)"></pagination-controls>
+      </div>
+    </body>
+  </div>

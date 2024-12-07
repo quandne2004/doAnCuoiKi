@@ -11,6 +11,7 @@ export class MyCommentComponent implements OnInit {
 
   isSpinning:boolean = false;
   comments:any;
+  p:number=1;
   constructor(private sv:CustomerService) { }
 
   ngOnInit(): void {

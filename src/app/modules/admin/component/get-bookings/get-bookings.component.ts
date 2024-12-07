@@ -11,7 +11,7 @@ import { error } from 'console';
 export class GetBookingsComponent implements OnInit {
 
   bookings : any;
-
+p :number =1;
   isSpinning:boolean=false;
   constructor(private sv:AdminService,private msg:NzMessageService) { }
 

@@ -1,51 +1,61 @@
-<h1>List Contract</h1>
-
+<h1>My Contracts</h1>
 <div id="content" class="rental-contract-table">
-    <nz-spin [nzSpinning]="isSpinning" [nzSize]="'large'" nzTip="Loading...">
-      <table style="width: 100%; border-collapse: collapse; margin-top: 20px; background-color: #ffffff;">
-        <thead>
-          <tr style="background-color: #f0f0f0; text-align: left; border-bottom: 2px solid #ddd;">
-            <th style="padding: 10px; color: #003973;">Contract ID</th>
-            <th style="padding: 10px; color: #003973;">Maintenance Terms</th>
-            <th style="padding: 10px; color: #003973;">Usage Terms</th>
-            <th style="padding: 10px; color: #003973;">Termination Terms</th>
-            <th style="padding: 10px; color: #003973;">My Contract</th>            
-            <th style="padding: 10px; color: #003973;">Contract Status</th>
-            <th style="padding: 10px; color: #003973;">Action</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr *ngFor="let contract of rentalContracts" style="border-bottom: 1px solid #ddd;">
-            <td style="padding: 10px;">{{ contract.id }}</td>
-            <td style="padding: 10px;">{{ contract.maintenanceTerms }}</td>
-            <td style="padding: 10px;">{{ contract.usageTerms }}</td>
+  <nz-spin [nzSpinning]="isSpinning" [nzSize]="'large'" nzTip="Loading...">
+    <table style="width: 100%; border-collapse: collapse; margin-top: 20px; background-color: #ffffff;">
+      <thead>
+        <tr style="background-color: #f0f0f0; text-align: left; border-bottom: 2px solid #ddd;">
+          <th style="padding: 10px; color: #003973;">Contract ID</th>
+          <th style="padding: 10px; color: #003973;">Maintenance Terms</th>
+          <th style="padding: 10px; color: #003973;">Usage Terms</th>
+          <th style="padding: 10px; color: #003973;">Termination Terms</th>
+          <th style="padding: 10px; color: #003973;">My Contract</th>            
+          <th style="padding: 10px; color: #003973;">Contract Status</th>
+          <th style="padding: 10px; color: #003973;">Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let contract of rentalContracts | paginate: { itemsPerPage: 8, currentPage: p }" style="border-bottom: 1px solid #ddd;">
+          <td style="padding: 10px;">{{ contract.id }}</td>
+          <td style="padding: 10px;">{{ contract.maintenanceTerms }}</td>
+          <td style="padding: 10px;">{{ contract.usageTerms }}</td>
 
-            <td style="padding: 10px;">{{ contract.terminationTerms }}</td>
-            <td style="padding: 10px;">
-                <button nz-button nzType="primary" routerLink="/customer/rental/{{contract.id}}" routerLinkActive="active">
-                  See All
+          <td style="padding: 10px;">{{ contract.terminationTerms }}</td>
+          <td style="padding: 10px;">
+              <button nz-button nzType="primary" routerLink="/customer/rental/{{contract.id}}" routerLinkActive="active">
+                See All
+              </button>
+            </td>
+          <td style="padding: 10px;">
+              <strong [ngStyle]="{'color': (contract.rentalContractStatus === 'ACCEPT' ? 'green' : contract.rentalContractStatus === 'REJECT' ? 'red' : 'orange')}">
+                {{contract.rentalContractStatus}}
+              </strong>
+            </td>
+          <td style="padding: 10px;">
+              <div *ngIf="contract.rentalContractStatus == 'PENDING'" style="display: flex; gap: 5px;"> <!-- Sử dụng gap để giảm khoảng cách -->
+                <button style="border-radius: 5px; font-size: 14px; padding: 6px 12px; background-color: #28a745; color: white; border: none; cursor: pointer; transition: background-color 0.3s;"
+                        nz-button (click)="changeStatus(contract.id, 'Accept')">
+                  Accept
                 </button>
-              </td>
-            <td style="padding: 10px;">
-                <strong [ngStyle]="{'color': (contract.rentalContractStatus === 'ACCEPT' ? 'green' : contract.rentalContractStatus === 'REJECTED' ? 'red' : 'orange')}">
-                  {{contract.rentalContractStatus}}
-                </strong>
-              </td>
-            <td style="padding: 10px;">
-                <div *ngIf="contract.rentalContractStatus == 'ACCEPT'" style="display: flex; gap: 5px;"> <!-- Sử dụng gap để giảm khoảng cách -->
-                  <button style="border-radius: 5px; font-size: 14px; padding: 6px 12px; background-color: #28a745; color: white; border: none; cursor: pointer; transition: background-color 0.3s;"
-                          nz-button (click)="changeStatus(contract.id, 'Accept')">
-                    Accept
-                  </button>
-                  <button style="border-radius: 5px; font-size: 14px; padding: 6px 12px; background-color: #dc3545; color: white; border: none; cursor: pointer; transition: background-color 0.3s;"
-                          nz-button (click)="changeStatus(contract.id, 'Reject')">
-                    REJECT
-                  </button>
-                </div>
-              </td>
-          </tr>
-        </tbody>
-      </table>
-    </nz-spin>
-  </div>
-  
+                <button style="border-radius: 5px; font-size: 14px; padding: 6px 12px; background-color: #dc3545; color: white; border: none; cursor: pointer; transition: background-color 0.3s;"
+                        nz-button (click)="changeStatus(contract.id, 'Reject')">
+                  REJECT
+                </button>
+              </div>
+            </td>
+        </tr>
+      </tbody>
+    </table>
+  </nz-spin>
+      <!-- Thanh chuyển trang cố định dưới đáy trang -->
+      <div class="pagination-container">
+        <pagination-controls (pageChange)="p = $event"></pagination-controls>
+    </div>
+  <style>
+    .pagination-container {
+      display: flex;
+      justify-content: center;
+      margin-top: 20px;
+      width: 100%;
+  }
+  </style>
+</div>

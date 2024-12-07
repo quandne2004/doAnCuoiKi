@@ -10,18 +10,23 @@
 body {
     display: flex;
     justify-content: center;
+    flex-direction: column; //
     align-items: center;
     min-height: 100vh;
     // đổi background bằng ảnh ở đây!!
-    background-size: cover; /* Đảm bảo ảnh phủ kín toàn bộ phần tử */
-    background-position: center; /* Đặt ảnh ở giữa phần tử */
+    background-size: cover; 
+    background-position: center; 
     background-image: url('https://images.unsplash.com/photo-1588420343728-7411f4c87441?fm=jpg&q=60&w=3000&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxleHBsb3JlLWZlZWR8Mnx8fGVufDB8fHx8fA%3D%3D');
-    // background: #131313;
     gap: 20px;
 }
 
 .container {
-    position: relative;
+    display: grid; 
+    grid-template-columns: repeat(4, 1fr); 
+    gap: 20px; 
+    justify-items: center;
+    padding-bottom: 20px;
+    overflow-x: hidden; 
 }
 
 .container .card {
@@ -31,6 +36,13 @@ body {
     background: #232323;
     border-radius: 20px;
     overflow: hidden;
+}
+//
+.pagination-container {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+    width: 100%;
 }
 
 .container .card:before {
@@ -68,8 +80,8 @@ body {
     width: 100%;
     height: 100%;
     transition: .5s;
-    overflow: hidden; /* Cắt bỏ phần thừa của ảnh */
-    border-radius: 8px; /* Bo góc ảnh để nhìn mềm mại hơn */
+    overflow: hidden; 
+    border-radius: 8px; 
 }
 
 .container .card:hover .imgBx {
@@ -81,10 +93,10 @@ body {
     position: absolute;
     top: 50%;
     left: 50%;
-    transform: translate(-50%, -50%); /* Remove rotation */
+    transform: translate(-50%, -50%);
     width: 270px;
-    aspect-ratio: 15 / 10; /* Điều chỉnh tỉ lệ hình ảnh cho đồng đều */
-    border-radius: inherit; /* Bo góc ảnh theo vùng chứa */
+    aspect-ratio: 15 / 10; 
+    border-radius: inherit; 
 }
 
 .container .card .contentBx {
@@ -94,7 +106,7 @@ body {
     height: 100px;
     text-align: center;
     transition: 1s;
-    z-index: 100; /* Ensure content stays above the image */
+    z-index: 100; 
 }
 
 .container .card:hover .contentBx {
@@ -200,4 +212,42 @@ body {
     opacity: 1;
     transform: translateY(0px);
     transition-delay: .7s;
+}
+//
+.search-container {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    margin: 20px 0;
+    position: relative; 
+}
+
+.search-container input {
+    width: 50%;
+    padding: 10px 40px 10px 15px; 
+    border-radius: 25px;
+    border: 1px solid #ccc;
+    font-size: 16px;
+    outline: none;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    transition: border 0.3s;
+}
+
+.search-container input:focus {
+    border: 1px solid #1BBFE9;
+}
+
+.search-container .fa-search {
+    position: absolute;
+    right: 26%; 
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 18px;
+    color: #888;
+    pointer-events: none; 
+    transition: color 0.3s;
+}
+
+.search-container input:focus + .fa-search {
+    color: #1BBFE9;
 }

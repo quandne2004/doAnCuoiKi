@@ -11,6 +11,7 @@ export class MyBookingsComponent implements OnInit {
 
   bookings : any;
   rentalContracts:any;
+  p:number=1;
   isSpinning: boolean=false;
   constructor(private sv:CustomerService,private router:Router) { 
     this.getMyBookings();

@@ -4,46 +4,88 @@ import { CustomerService } from '../../services/customer.service';
 @Component({
   selector: 'app-customer',
   templateUrl: './customer.component.html',
-  styleUrls: ['./customer.component.scss']
+  styleUrls: ['./customer.component.scss'],
 })
 export class CustomerComponent implements OnInit {
+  cars: any[] = []; // Danh sách tất cả các xe
+  filteredCars: any[] = []; // Danh sách xe sau khi tìm kiếm/lọc
+  p: number = 1; // Trang hiện tại trong phân trang
+  isSpinning: boolean = false; // Trạng thái loading
+  typingTimer: any; // Biến để lưu timeout
+  readonly doneTypingInterval: number = 500; // Thời gian chờ sau khi gõ (500ms)
 
+  constructor(private sv: CustomerService) {}
 
-  cars : any=[];
-  isSpinning:boolean = false;
-  constructor(private sv:CustomerService) { }
-
-  ngOnInit() {
-    this.getAllCars();
-  }
-  getAllCars(){
-    this.sv.getAllCars().subscribe((res)=>{
-      console.log(res);
-      this.isSpinning =true;
-      res.forEach((element: { processedImg: string; returnedImage: string; }) => {
-        element.processedImg = 'data:image/jpeg;base64,' + element.returnedImage;
-        this.cars.push(element);
-      });
-    })
+  ngOnInit(): void {
+    this.loadAllCars();
   }
 
-  //loại bỏ navbar đi đến luôn phần content
-
-  ngAfterViewInit(): void {
-    // Cuộn đến phần nội dung khi component được khởi tạo
-    this.scrollToContent();
-  }
-
-  scrollToContent(): void {
-    setTimeout(() => {
-      const content = document.getElementById('content');
-      if (content) {
-        content.scrollIntoView({
-          behavior: 'smooth',
-          block: 'start'
-        });
+  /**
+   * Lấy danh sách tất cả các xe từ API và hiển thị.
+   */
+  loadAllCars(): void {
+    this.isSpinning = true;
+    this.sv.getAllCars().subscribe(
+      (res) => {
+        console.log('Tất cả xe:', res);
+        this.cars = res.map((car: any) => ({
+          ...car,
+          processedImg: car.returnedImage
+            ? `data:image/jpeg;base64,${car.returnedImage}`
+            : 'default-image-url.jpg', // Hình ảnh mặc định nếu không có ảnh
+        }));
+        this.filteredCars = [...this.cars]; // Sao chép danh sách ban đầu để hiển thị
+        this.isSpinning = false;
+      },
+      (error) => {
+        console.error('Lỗi khi tải danh sách xe:', error);
+        this.isSpinning = false;
       }
-    }, 500); // Thay đổi thời gian tùy theo độ trễ của trang
+    );
   }
 
+  /**
+   * Xử lý khi người dùng nhập vào ô tìm kiếm.
+   * @param event Sự kiện gõ phím
+   */
+  onSearch(event: Event): void {
+    const searchValue = (event.target as HTMLInputElement).value.trim();
+
+    // Hủy bỏ timeout trước đó
+    clearTimeout(this.typingTimer);
+
+    // Đặt timeout mới
+    this.typingTimer = setTimeout(() => {
+      this.applySearchFilter(searchValue); // Thực hiện tìm kiếm
+    }, this.doneTypingInterval);
+  }
+
+  /**
+   * Lọc danh sách xe dựa trên giá trị tìm kiếm.
+   * @param searchValue Giá trị nhập từ ô tìm kiếm
+   */
+  applySearchFilter(searchValue: string): void {
+    if (!searchValue) {
+      // Nếu ô tìm kiếm trống, hiển thị tất cả xe
+      this.filteredCars = [...this.cars];
+    } else {
+      // Lọc xe có tên chứa từ khóa tìm kiếm
+      this.filteredCars = this.cars.filter((car: any) =>
+        car.name.toLowerCase().includes(searchValue.toLowerCase())
+      );
+    }
+  }
+
+  /**
+   * Xử lý khi chuyển trang.
+   * @param page Trang được chuyển đến
+   */
+  onPageChange(page: number): void {
+    this.p = page; // Gán số trang hiện tại
+    const contentElement = document.getElementById('content');
+    if (contentElement) {
+      contentElement.scrollIntoView({ behavior: 'auto', block: 'start' });
+    }
+  }
+  
 }

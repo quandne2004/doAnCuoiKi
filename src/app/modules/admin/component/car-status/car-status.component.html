@@ -1,47 +1,56 @@
-
-<h1>Car Status</h1>
-
 <div id="content">
-<nz-spin [nzSpinning]="isSpinning" [nzSize]="'large'" nzTip="Working....">
-    <nz-table #basicTable [nzData]="cars" [nzPageSize]="20" [nzShowPagination]="'false'">
-        <thead>
-            <tr>
-                <th style="font-weight: bolder; color: #003973;">Username</th>
-                <th style="font-weight: bolder; color: #003973;">Brand</th>
-                <th style="font-weight: bolder; color: #003973;">Color</th>
-                <th style="font-weight: bolder; color: #003973;">Price</th>
-                <th style="font-weight: bolder; color: #003973;">Description</th>
-                <th style="font-weight: bolder; color: #003973;">Type</th>
-                <th style="font-weight: bolder; color: #003973;">Transmission</th>
-                <th style="font-weight: bolder; color: #003973;">carOwner</th>
-                <th style="font-weight: bolder; color: #003973;">Status</th>
-                <th style="font-weight: bolder; color: #003973;">Action</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr *ngFor="let car of basicTable.data">
-                <td>{{car.name}}</td>
-                <td>{{car.brand}}</td>
-                <td>{{car.color}}</td>
-                <td>{{car.price}}</td>
-                <td>{{car.description}}</td>
-                <td>{{car.type}}</td>
-                <td>{{car.transmission}}</td>
-                <td>{{car.carOwner}}</td>
-                <td>
-                    <strong [ngStyle]="{'color': (car.carStatus === 'Use' ? 'green' : car.carStatus === 'Booked' ? 'blue' : '')}">
-                        {{car.carStatus}}
-                    </strong>
-                </td>
-                <td>
-                    <span style="display: flex; gap: 8px;"> <!-- Sử dụng flex để căn chỉnh các nút -->
-                        <button nzSize="small" nz-button nzType="primary" (click)="changeCarStatus(car.id,'Use')">Use</button>
-                        <button nzSize="small" nz-button nzType="primary" (click)="changeCarStatus(car.id,'Booked')" style="background-color: red; color: white;">Booked</button>
-                        <button nzSize="small" nz-button nzType="primary" (click)="changeCarStatus(car.id,'Fixing')" style="background-color: red; color: white;">Fixing</button>
-                    </span>
-                </td>
-            </tr>
-        </tbody>
-    </nz-table>
-</nz-spin>
-</div>
+    <nz-spin [nzSpinning]="isSpinning" [nzSize]="'large'" nzTip="Working....">
+        <nz-table #basicTable [nzData]="cars" [nzPageSize]="20" [nzShowPagination]="'false'">
+            <thead>
+                <tr>
+                    <th style="font-weight: bolder; color: #003973;">Username</th>
+                    <th style="font-weight: bolder; color: #003973;">Brand</th>
+                    <th style="font-weight: bolder; color: #003973;">Color</th>
+                    <th style="font-weight: bolder; color: #003973;">Price</th>
+                    <th style="font-weight: bolder; color: #003973;">Description</th>
+                    <th style="font-weight: bolder; color: #003973;">Type</th>
+                    <th style="font-weight: bolder; color: #003973;">Transmission</th>
+                    <th style="font-weight: bolder; color: #003973;">carOwner</th>
+                    <th style="font-weight: bolder; color: #003973;">Status</th>
+                    <th style="font-weight: bolder; color: #003973;">Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let car of basicTable.data | paginate: { itemsPerPage: 10, currentPage: p }">
+                    <td>{{car.name}}</td>
+                    <td>{{car.brand}}</td>
+                    <td>{{car.color}}</td>
+                    <td>{{car.price}}</td>
+                    <td>{{car.description}}</td>
+                    <td>{{car.type}}</td>
+                    <td>{{car.transmission}}</td>
+                    <td>{{car.carOwner}}</td>
+                    <td>
+                        <strong [ngStyle]="{'color': (car.carStatus === 'Use' ? 'green' : car.carStatus === 'Booked' ? 'blue' : '')}">
+                            {{car.carStatus}}
+                        </strong>
+                    </td>
+                    <td>
+                        <span style="display: flex; gap: 8px;"> <!-- Sử dụng flex để căn chỉnh các nút -->
+                            <button nzSize="small" nz-button nzType="primary" (click)="changeCarStatus(car.id,'Use')">Use</button>
+                            <button nzSize="small" nz-button nzType="primary" (click)="changeCarStatus(car.id,'Booked')" style="background-color: red; color: white;">Booked</button>
+                            <button nzSize="small" nz-button nzType="primary" (click)="changeCarStatus(car.id,'Fixing')" style="background-color: red; color: white;">Fixing</button>
+                        </span>
+                    </td>
+                </tr>
+            </tbody>
+        </nz-table>
+    </nz-spin>
+        <!-- Thanh chuyển trang cố định dưới đáy trang -->
+        <div class="pagination-container">
+            <pagination-controls (pageChange)="p = $event"></pagination-controls>
+        </div>
+      <style>
+        .pagination-container {
+          display: flex;
+          justify-content: center;
+          margin-top: 20px;
+          width: 100%;
+      }
+      </style>
+    </div>

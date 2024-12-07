@@ -67,6 +67,12 @@ getAllRentalContract():Observable<any>{
   return this.http.get(BASIC + '/api/customer/rental',{headers:this.createAuthorizationHeader()});
 }
 
+updateBookACarDetails(bookACarId: number, bookACarDto: any): Observable<any> {
+  return this.http.put(`${BASIC}/api/customer/updateBookACar/${bookACarId}`, bookACarDto, {
+    headers: this.createAuthorizationHeader()
+  });
+}
+
 createAuthorizationHeader():HttpHeaders{
   let authHeaders : HttpHeaders = new HttpHeaders();
   return authHeaders.set(

@@ -1,27 +1,42 @@
-
-<h1>My Comments</h1>
 <div id="content">
-<nz-spin [nzSpinning]="isSpinning" [nzSize]="'large'" nzTip="Working....">
-    <nz-table #basicTable [nzData]="comments" [nzPageSize]="20" [nzShowPagination]="'false'">
-      <thead>
-        <tr>
-          <th style="font-weight: bolder; color: #003973;">Name</th>
-          <th style="font-weight: bolder; color: #003973;">My Comment</th>
-          <th style="font-weight: bolder; color: #003973;">Rate</th>
-          <th style="font-weight: bolder; color: #003973;">Date</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr *ngFor="let comment of basicTable.data">
-          <td>{{comment.username}}</td>
-          <td>{{comment.body}}</td>
-          <!-- Sử dụng nz-rate để hiển thị sao -->
-          <td>
-            <nz-rate [ngModel]="comment.rating" [nzDisabled]="true"></nz-rate>
-          </td>
-          <td>{{comment.createdDate | date: 'MMM d, y'}}</td>
-        </tr>
-      </tbody>
-    </nz-table>
-  </nz-spin>
-</div>
+  <nz-spin [nzSpinning]="isSpinning" [nzSize]="'large'" nzTip="Working....">
+      <nz-table #basicTable [nzData]="comments" [nzPageSize]="20" [nzShowPagination]="'false'">
+        <thead>
+          <tr>
+            <th style="font-weight: bolder; color: #003973;">Name</th>
+            <th style="font-weight: bolder; color: #003973;">My Comment</th>
+            <th style="font-weight: bolder; color: #003973;">Rate</th>
+            <th style="font-weight: bolder; color: #003973;">Date</th>
+            <th style="font-weight: bolder; color: #003973;">Status</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let comment of basicTable.data | paginate: { itemsPerPage: 8, currentPage: p }">
+            <td>{{comment.username}}</td>
+            <td>{{comment.body}}</td>
+            <!-- Sử dụng nz-rate để hiển thị sao -->
+            <td>
+              <nz-rate [ngModel]="comment.rating" [nzDisabled]="true"></nz-rate>
+            </td>
+            <td>{{comment.createdDate | date: 'MMM d, y'}}</td>
+            <td style="padding: 10px;">
+              <strong [ngStyle]="{'color': (comment.commentStatus === 'APPROVED' ? 'green' : comment.commentStatus === 'REJECTED' ? 'red' : 'orange')}">
+                {{comment.commentStatus}}
+              </strong>
+            </td>          </tr>
+        </tbody>
+      </nz-table>
+    </nz-spin>
+        <!-- Thanh chuyển trang cố định dưới đáy trang -->
+        <div class="pagination-container">
+          <pagination-controls (pageChange)="p = $event"></pagination-controls>
+      </div>
+    <style>
+      .pagination-container {
+        display: flex;
+        justify-content: center;
+        margin-top: 20px;
+        width: 100%;
+    }
+    </style>
+  </div>

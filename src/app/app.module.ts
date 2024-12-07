@@ -28,6 +28,7 @@ import { CarDetailsComponent } from './car-details/car-details.component';
 import { NzRateModule } from 'ng-zorro-antd/rate';
 import { NzCommentModule } from 'ng-zorro-antd/comment';
 import { NgChartsModule } from 'ng2-charts';
+import { NgxPaginationModule } from 'ngx-pagination';
 
 
 registerLocaleData(en);
@@ -45,6 +46,7 @@ registerLocaleData(en);
   imports: [
     BrowserModule,
     AppRoutingModule,
+    NgxPaginationModule,
     FormsModule,
     HttpClientModule,
     BrowserAnimationsModule,

@@ -1,53 +1,103 @@
 .chart-container {
   display: flex;
   align-items: flex-end;
-  gap: 15px;
-  max-width: 700px; /* Reduced the width */
-  margin: 0 auto;
+  position: relative;
+  height: 300px;
+  padding: 10px;
+  border-left: 2px solid #ccc; /* Trục Y */
+  border-bottom: 2px solid #ccc; /* Trục X */
+  background: linear-gradient(to bottom, #e0e0e0 1px, transparent 1px) 0 0 / 100% calc(100% / 5),
+              linear-gradient(to right, #e0e0e0 1px, transparent 1px) 0 0 / calc(100% / 12) 100%; /* Lưới */
 }
 
 .y-axis {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  height: 300px; /* Reduced the height */
-  font-size: 14px; /* Slightly smaller font size */
-  color: #777;
+  text-align: right;
+  margin-right: 15px;
+  font-size: 13px;
+  font-weight: 500;
+  color: #555;
+  height: 100%;
+}
+
+.y-axis span {
+  position: relative;
 }
 
 .chart {
   display: flex;
+  flex-grow: 1;
+  justify-content: space-between;
   align-items: flex-end;
-  gap: 10px; /* Slightly reduced the gap between bars */
-  height: 300px; /* Reduced the height */
-  padding: 15px;
-  background-color: #fafafa;
-  border: 1px solid #ddd;
-  border-radius: 6px; /* Slightly rounded corners */
+  height: 100%;
+  position: relative;
 }
 
 .bar {
-  width: 40px; /* Reduced bar width */
-  background-color: #4CAF50;
+  width: 12%;
+  background-color: #4caf50;
   position: relative;
-  border-radius: 6px 6px 0 0; /* Rounded top corners */
-  transition: height 0.3s;
+  border-radius: 8px;
+  transition: all 0.3s ease-in-out;
+  z-index: 1;
+}
+
+.bar:hover {
+  background-color: #45a049;
+  transform: scaleY(1.1);
 }
 
 .bar-value {
   position: absolute;
-  bottom: 100%;
-  left: 50%;
-  transform: translateX(-50%);
-  font-size: 12px; /* Slightly smaller font size */
-  color: #333;
+  top: -25px;
+  font-size: 11px;
+  font-weight: bold;
+  color: #444;
+  text-align: center;
+  width: 100%;
 }
 
 .x-axis-labels {
   display: flex;
   justify-content: space-between;
-  max-width: 700px; /* Reduced the width */
-  margin: 10px auto;
-  font-size: 14px; /* Slightly smaller font size */
-  color: #555;
+  margin-top: 10px;
+  font-size: 12px;
+  font-weight: 500;
+  color: #666;
+  position: relative;
+}
+.pie-chart-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%; /* Đảm bảo container chiếm toàn bộ chiều ngang */
+  padding: 10px;
+}
+
+.pie-chart-container canvas {
+  max-width: 200px; /* Kích thước tối đa */
+  max-height: 200px; /* Kích thước tối đa */
+  width: 100%;
+  height: auto; /* Tự điều chỉnh để không bị kéo giãn */
+  margin: auto;
+}
+
+.pie-legend {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  margin-top: 10px;
+  gap: 10px; /* Khoảng cách giữa các mục trong chú thích */
+}
+
+.color-box {
+  display: inline-block;
+  width: 15px; /* Kích thước box màu */
+  height: 15px;
+  border-radius: 50%;
+  margin-right: 10px;
+  border: 1px solid #ccc; /* Đường viền màu */
 }

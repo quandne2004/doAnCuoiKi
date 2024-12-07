@@ -1,29 +1,56 @@
-
-<h1>User Comments</h1>
 <div id="content">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-<nz-spin [nzSpinning]="isSpinning" [nzSize]="'large'" nzTip="Loading comments...">
-  <table class="comments-table">
-    <thead>
-      <tr>
-        <th>User name</th>
-        <th>Rating</th>
-        <th>Comments</th>
-        <th>Date</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr *ngFor="let comment of comments">
-        <td class="username">{{ comment.username }}</td>
-        <td class="rating">
-          <span *ngFor="let star of [].constructor(5); let i = index">
-            <i class="fa" [ngClass]="{'fa-star': comment.rating > i, 'fa-star-o': comment.rating <= i}"></i>
-          </span>
-        </td>
-        <td class="comment-body">{{ comment.body }}</td>
-        <td class="date">{{ comment.createdDate | date: 'MMM d, y' }}</td>
-      </tr>
-    </tbody>
-  </table>
-</nz-spin>
-</div>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <nz-spin [nzSpinning]="isSpinning" [nzSize]="'large'" nzTip="Loading comments...">
+    <table class="comments-table">
+      <thead>
+        <tr>
+          <th>User name</th>
+          <th>Rating</th>
+          <th>Comments</th>
+          <th>Date</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let comment of comments | paginate: { itemsPerPage: 8, currentPage: p }">
+          <td class="username">{{ comment.username }}</td>
+          <td class="rating">
+            <span *ngFor="let star of [].constructor(5); let i = index">
+              <i class="fa" [ngClass]="{'fa-star': comment.rating > i, 'fa-star-o': comment.rating <= i}"></i>
+            </span>
+          </td>
+          <td class="comment-body">{{ comment.body }}</td>
+          <td class="date">{{ comment.createdDate | date: 'MMM d, y' }}</td>
+          <td style="padding: 10px;">
+            <strong [ngStyle]="{'color': (comment.commentStatus === 'APPROVED' ? 'green' : comment.commentStatus === 'REJECTED' ? 'red' : 'orange')}">
+              {{comment.commentStatus}}
+            </strong>
+          </td>
+          <td style="padding: 10px;">
+            <div *ngIf="comment.commentStatus == 'PENDING'" style="display: flex; gap: 5px;"> <!-- Sử dụng gap để giảm khoảng cách -->
+              <button style="border-radius: 5px; font-size: 14px; padding: 6px 12px; background-color: #28a745; color: white; border: none; cursor: pointer; transition: background-color 0.3s;"
+                      nz-button (click)="changeStatus(comment.id, 'Approved')">
+                Accept
+              </button>
+              <button style="border-radius: 5px; font-size: 14px; padding: 6px 12px; background-color: #dc3545; color: white; border: none; cursor: pointer; transition: background-color 0.3s;"
+                      nz-button (click)="changeStatus(comment.id, 'Rejected')">
+                REJECT
+              </button>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </nz-spin>
+      <!-- Thanh chuyển trang cố định dưới đáy trang -->
+      <div class="pagination-container">
+        <pagination-controls (pageChange)="p = $event"></pagination-controls>
+    </div>
+  <style>
+    .pagination-container {
+      display: flex;
+      justify-content: center;
+      margin-top: 20px;
+      width: 100%;
+  }
+  </style>
+  </div>

@@ -129,66 +129,66 @@
 </head>
 <body>
   <h1>Total Of Rental</h1>
-  <div class="analytics-report" *ngIf=" AllData">
+  <div class="analytics-report" *ngIf="AllData">
     <div class="dashboard-overview">
       <div class="stat-card" routerLink="/admin/totalCar" routerLinkActive="active">
         <h3>Total Car</h3>
         <p id="total-questions">{{AllData.totalCars}}</p>
       </div>
-      <div class="stat-card" routerLink="/admin/totalBooking" routerLinkActive="active" >
+      <div class="stat-card" routerLink="/admin/totalBooking" routerLinkActive="active">
         <h3>Total Bookings</h3>
         <p id="average-score">{{AllData.totalBookings}}</p>
       </div>
       <div class="stat-card" routerLink="/admin/totalContract" routerLinkActive="active">
         <h3>Total Contracts</h3>
-        <p id="average-score">{{AllData.totalRentalContracts }}</p>
+        <p id="average-score">{{AllData.totalRentalContracts}}</p>
       </div>
-      <div class="stat-card" >
+      <div class="stat-card">
         <h3>Total Revenue</h3>
         <p id="average-score">{{AllData.totalRevenue | currency}}</p>
       </div>
     </div>
-<!-- chart -->
 
-<h1>Revenue Chart</h1>
+    <!-- Chart section -->
+    <h1>Analytics Charts</h1>
+    <div class="charts-container">
+      <!-- Revenue Chart -->
+      <div class="chart-card">
+        <h4>Revenue Chart</h4>
+        <div class="chart-container">
+          <!-- Y-axis and chart content -->
+          <div class="y-axis">
+            <span *ngFor="let tick of [100, 80, 60, 40, 20, 0]">{{ tick }}</span>
+          </div>
+          <div class="chart">
+            <div *ngFor="let value of chartData.values; let i = index" class="bar" [style.height.%]="value">
+              <span class="bar-value">{{ chartData.values[i] | currency }}</span>
+            </div>
+          </div>
+        </div>
+        <div class="x-axis-labels">
+          <span *ngFor="let label of chartData.labels">{{ label }}</span>
+        </div>
+      </div>
 
-<div class="chart-container">
-  <!-- Trục y với các giá trị hiển thị từ 0 đến 100 -->
-  <div class="y-axis">
-    <span *ngFor="let tick of [100, 80, 60, 40, 20, 0]">{{ tick }}</span>
-  </div>
-
-  <!-- Khu vực biểu đồ cột -->
-  <div class="chart">
-    <div *ngFor="let value of chartData.values; let i = index" class="bar" [style.height.%]="value">
-      <span class="bar-value">{{ chartData.values[i] | currency }}</span>
+      <!-- Pie Chart -->
+      <div class="chart-card">
+        <h4>Car Chart</h4>
+        <div class="pie-chart-container">
+          <canvas baseChart
+                  [data]="pieChartData"
+                  [type]="pieChartType"
+                  [options]="pieChartOptions"
+                  [labels]="pieChartLabels">
+          </canvas>
+        </div>
+        <div *ngFor="let label of pieChartLabels; let i = index" style="display: flex; align-items: center; margin-top: 10px;">
+          <span [style.background-color]="pieChartData.datasets[0].backgroundColor[i]" style="width: 20px; height: 20px; border-radius: 50%; margin-right: 10px;"></span>
+          <p>{{ label }}</p>
+        </div>
+      </div>
     </div>
   </div>
-</div>
-
-<!-- Nhãn cho trục x dưới biểu đồ -->
-<div class="x-axis-labels">
-  <span *ngFor="let label of chartData.labels">{{ label }}</span>
-</div>
-
-<!--  -->
-
-
-<!-- Pie Chart -->
- <h1>Car Chart</h1>
- <div style="display: flex; flex-direction: column; align-items: center;">
-  <canvas baseChart
-          [data]="pieChartData"
-          [type]="pieChartType"
-          [options]="pieChartOptions"
-          [labels]="pieChartLabels">
-  </canvas>
-</div>
-<div *ngFor="let label of pieChartLabels; let i = index" style="display: flex; align-items: center; margin-top: 10px;">
-  <span [style.background-color]="pieChartData.datasets[0].backgroundColor[i]" style="width: 20px; height: 20px; border-radius: 50%; margin-right: 10px;"></span>
-  <p>{{ label }}</p>
-</div>
-<!-- // -->
-  </div>
 </body>
+
 </html>

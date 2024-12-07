@@ -1,13 +1,36 @@
+.charts-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  justify-content: space-between;
+  margin-bottom: 30px;
+}
+
+.chart-card {
+  flex: 1 1 48%; /* Adjust this value to control the width */
+  background-color: #ffffff;
+  border-radius: 12px;
+  padding: 15px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Media query for smaller screens */
+@media (max-width: 768px) {
+  .chart-card {
+    flex: 1 1 100%; /* Full width for smaller screens */
+  }
+}
+
 .chart-container {
   display: flex;
   align-items: flex-end;
   position: relative;
   height: 300px;
   padding: 10px;
-  border-left: 2px solid #ccc; /* Trục Y */
-  border-bottom: 2px solid #ccc; /* Trục X */
+  border-left: 2px solid #ccc; /* Y-axis */
+  border-bottom: 2px solid #ccc; /* X-axis */
   background: linear-gradient(to bottom, #e0e0e0 1px, transparent 1px) 0 0 / 100% calc(100% / 5),
-              linear-gradient(to right, #e0e0e0 1px, transparent 1px) 0 0 / calc(100% / 12) 100%; /* Lưới */
+              linear-gradient(to right, #e0e0e0 1px, transparent 1px) 0 0 / calc(100% / 12) 100%; /* Grid */
 }
 
 .y-axis {
@@ -68,20 +91,21 @@
   color: #666;
   position: relative;
 }
+
 .pie-chart-container {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  width: 100%; /* Đảm bảo container chiếm toàn bộ chiều ngang */
+  width: 100%; /* Ensure container takes full width */
   padding: 10px;
 }
 
 .pie-chart-container canvas {
-  max-width: 200px; /* Kích thước tối đa */
-  max-height: 200px; /* Kích thước tối đa */
+  max-width: 200px; /* Max size for the chart */
+  max-height: 200px;
   width: 100%;
-  height: auto; /* Tự điều chỉnh để không bị kéo giãn */
+  height: auto; /* Adjust size without distortion */
   margin: auto;
 }
 
@@ -90,14 +114,14 @@
   flex-wrap: wrap;
   justify-content: center;
   margin-top: 10px;
-  gap: 10px; /* Khoảng cách giữa các mục trong chú thích */
+  gap: 10px; /* Space between legend items */
 }
 
 .color-box {
   display: inline-block;
-  width: 15px; /* Kích thước box màu */
+  width: 15px; /* Size of color box */
   height: 15px;
   border-radius: 50%;
   margin-right: 10px;
-  border: 1px solid #ccc; /* Đường viền màu */
+  border: 1px solid #ccc; /* Border color */
 }
